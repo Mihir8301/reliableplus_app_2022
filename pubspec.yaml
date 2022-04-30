@@ -29,8 +29,18 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   smooth_star_rating_null_safety: ^1.0.4+2
-  file_picker:
-  open_file:
+  file_picker: ^4.5.1
+  open_file: ^3.2.1
+  firebase_core: ^1.15.0
+  firebase_database: ^9.0.12
+  firebase_storage: ^10.2.14
+  provider: ^6.0.2
+  connectivity_plus: ^2.2.0
+  flutter_spinkit: ^5.1.0
+  top_snackbar_flutter: ^1.0.2
+  cached_network_image: ^3.2.0
+  intl: ^0.17.0
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:
