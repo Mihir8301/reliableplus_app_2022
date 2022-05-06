@@ -86,63 +86,72 @@ class UserController {
   }
 
   Future<List<DailyAttendenceModel>> getDailyAttendanceList(String studentId) async {
+    MyPrint.printOnConsole("getDailyAttendanceList called");
     List<DailyAttendenceModel> attendanceList = [];
 
     if(studentId.isNotEmpty) {
-      DataSnapshot dataSnapshot = await FirebaseDatabase.instance.ref(ATTENDANCE_NODE).child(studentId).get();
+      try {
+        DataSnapshot dataSnapshot = await FirebaseDatabase.instance.ref(ATTENDANCE_NODE).child(studentId).get();
 
-      if(dataSnapshot.exists && dataSnapshot.value != null) {
-        Map<String, dynamic> map = {};
-        try {
-          map = Map.castFrom<dynamic, dynamic, String, dynamic>(dataSnapshot.value as Map);
-        }
-        catch(e, s) {
-          MyPrint.printOnConsole("Error in Converting User Data To Map:${e}");
-          MyPrint.printOnConsole(s);
-        }
-
-        if(map.isNotEmpty) {
-          for(String key in map.keys) {
-            try {
-              Map<String, dynamic> attendanceModelMap = Map.castFrom<dynamic, dynamic, String, dynamic>(map[key]);
-
-              DailyAttendenceModel dailyAttendenceModel = DailyAttendenceModel.fromMap(attendanceModelMap);
-              attendanceList.add(dailyAttendenceModel);
-              MyPrint.printOnConsole("dailyAttendenceModel:${dailyAttendenceModel}");
-            }
-            catch(e, s) {
-              MyPrint.printOnConsole("Error in Converting Attendance Data To Map:${e}");
-              MyPrint.printOnConsole(s);
-            }
+        if(dataSnapshot.exists && dataSnapshot.value != null) {
+          Map<String, dynamic> map = {};
+          try {
+            map = Map.castFrom<dynamic, dynamic, String, dynamic>(dataSnapshot.value as Map);
+          }
+          catch(e, s) {
+            MyPrint.printOnConsole("Error in Converting User Data To Map:${e}");
+            MyPrint.printOnConsole(s);
           }
 
-          if(attendanceList.isNotEmpty) {
-            attendanceList.sort((a, b) {
-              return (a.datetime ?? DateTime.now()).compareTo(b.datetime ?? DateTime.now());
-            });
+          if(map.isNotEmpty) {
+            for(String key in map.keys) {
+              try {
+                Map<String, dynamic> attendanceModelMap = Map.castFrom<dynamic, dynamic, String, dynamic>(map[key]);
 
-            DateTime firstDate = attendanceList.first.datetime ?? DateTime.now();
-            DateTime lastDate = attendanceList.last.datetime ?? DateTime.now();
-
-            if(lastDate.isAfter(firstDate)) {
-              firstDate = firstDate.add(Duration(days: 1));
-              while(firstDate.day != lastDate.day || firstDate.month != lastDate.month || firstDate.year != lastDate.year) {
-                List<DailyAttendenceModel> list = attendanceList.where((element) {
-                  DateTime dateTime = element.datetime ?? DateTime.now();
-                  return dateTime.day == firstDate.day && dateTime.month == firstDate.month && dateTime.year == firstDate.year;
-                }).toList();
-                if(list.isEmpty) {
-                  attendanceList.add(DailyAttendenceModel(datetime: firstDate, attandance: "A"));
-                }
-                firstDate = firstDate.add(Duration(days: 1));
+                DailyAttendenceModel dailyAttendenceModel = DailyAttendenceModel.fromMap(attendanceModelMap);
+                attendanceList.add(dailyAttendenceModel);
+                MyPrint.printOnConsole("dailyAttendenceModel:${dailyAttendenceModel}");
               }
+              catch(e, s) {
+                MyPrint.printOnConsole("Error in Converting Attendance Data To Map:${e}");
+                MyPrint.printOnConsole(s);
+              }
+            }
 
+            if(attendanceList.isNotEmpty) {
               attendanceList.sort((a, b) {
                 return (a.datetime ?? DateTime.now()).compareTo(b.datetime ?? DateTime.now());
               });
+
+              DateTime firstDate = attendanceList.first.datetime ?? DateTime.now();
+              DateTime lastDate = attendanceList.last.datetime ?? DateTime.now();
+              
+              MyPrint.printOnConsole("First Date:${firstDate}");
+
+              if(lastDate.isAfter(firstDate)) {
+                while(lastDate.isAfter(firstDate) && firstDate.day != lastDate.day || firstDate.month != lastDate.month || firstDate.year != lastDate.year) {
+                  //MyPrint.printOnConsole("In While");
+                  List<DailyAttendenceModel> list = attendanceList.where((element) {
+                    DateTime dateTime = element.datetime ?? DateTime.now();
+                    return dateTime.day == firstDate.day && dateTime.month == firstDate.month && dateTime.year == firstDate.year;
+                  }).toList();
+                  if(list.isEmpty) {
+                    attendanceList.add(DailyAttendenceModel(datetime: firstDate, attandance: "A"));
+                  }
+                  firstDate = firstDate.add(Duration(days: 1));
+                }
+
+                attendanceList.sort((a, b) {
+                  return (a.datetime ?? DateTime.now()).compareTo(b.datetime ?? DateTime.now());
+                });
+              }
             }
           }
         }
+      }
+      catch(e, s) {
+        MyPrint.printOnConsole("Error in Getting Attendence List:${e}");
+        MyPrint.printOnConsole(s);
       }
     }
 
