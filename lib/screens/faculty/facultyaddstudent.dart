@@ -173,7 +173,7 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
           Padding(
             padding: EdgeInsets.only(left: 5),
             child: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
+              icon: Icon(Icons.arrow_back),
               color: Colors.white,
               onPressed: () {
                 Navigator.pushNamed(context, FacultyDashboard.routeName);

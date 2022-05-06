@@ -68,7 +68,7 @@ class _StudentFeedbackState extends State<StudentFeedback> {
           Padding(
             padding: EdgeInsets.only(left: 10),
             child: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
+              icon: Icon(Icons.arrow_back),
               color: Colors.white,
               onPressed: () {
                 Navigator.pushNamed(context, StudentDashboard.routeName);

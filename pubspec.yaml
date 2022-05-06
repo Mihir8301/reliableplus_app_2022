@@ -70,6 +70,7 @@ flutter:
     - assets/icons/logout.png
     - assets/icons/timetable.png
     - assets/icons/query.png
+    - assets/icons/faculty_student_profile_info_icon.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

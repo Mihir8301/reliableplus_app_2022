@@ -28,7 +28,7 @@ class _FacultyViewListState extends State<FacultyViewList> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
+      appBar: AppBar( backgroundColor: Colors.blueAccent,
         title: Text("Students List"),
       ),
       body: SafeArea(
@@ -57,7 +57,7 @@ class _FacultyViewListState extends State<FacultyViewList> {
       return ListView(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * 0.4,),
-          Text("No Students"),
+          Text("No Students",textAlign: TextAlign.center,),
         ],
       );
     }

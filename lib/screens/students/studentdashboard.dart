@@ -89,7 +89,7 @@ class _StudentDashboardState extends State<StudentDashboard> {
         children: <Widget>[
           //If Logout then ask first then Navigate
           IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(Icons.arrow_back),
             color: Colors.white,
             onPressed: () {
               showDialog(context: context, builder: (context)=> LogoutScreen());

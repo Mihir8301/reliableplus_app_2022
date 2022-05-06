@@ -70,7 +70,7 @@ class _StudentDailyAttendanceState extends State<StudentDailyAttendance> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
+      appBar: AppBar( backgroundColor: Colors.blueAccent,
         title: Text("Daily Attendance"),
       ),
       body: SafeArea(

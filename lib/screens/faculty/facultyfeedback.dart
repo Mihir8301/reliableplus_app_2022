@@ -29,6 +29,7 @@ class _FacultyFeedbackState extends State<FacultyFeedback> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
         title: Text("Feedbacks"),
       ),
       body: SafeArea(

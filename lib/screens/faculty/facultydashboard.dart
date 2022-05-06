@@ -91,7 +91,7 @@ class _FacultyDashboardState extends State<FacultyDashboard> {
         children: <Widget>[
           //If Logout then ask first then Navigate
           IconButton(
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(Icons.arrow_back),
             color: Colors.white,
             onPressed: () {
               showDialog(
