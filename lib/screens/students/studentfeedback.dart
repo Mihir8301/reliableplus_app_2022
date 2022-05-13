@@ -40,12 +40,18 @@ class _StudentFeedbackState extends State<StudentFeedback> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      Padding(padding: EdgeInsets.only(left: 10, right: 10), child: getNameTextField()),
+                      Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: getNameTextField()),
                       SizedBox(height: 25),
-                      Padding(padding: EdgeInsets.only(left: 10, right: 10), child: getFeedbackTextField()),
+                      Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: getFeedbackTextField()),
                       getRatingWidget(),
                       SizedBox(height: 25),
-                      Padding(padding: EdgeInsets.only(left: 10, right: 10), child: getSubmitButton()),
+                      Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: getSubmitButton()),
                       SizedBox(height: 15),
                     ],
                   ),
@@ -91,9 +97,7 @@ class _StudentFeedbackState extends State<StudentFeedback> {
             child: IconButton(
               icon: Icon(Icons.arrow_back_ios),
               color: Colors.blueAccent,
-              onPressed: () {
-
-              },
+              onPressed: () {},
             ),
           ),
         ],
@@ -110,10 +114,9 @@ class _StudentFeedbackState extends State<StudentFeedback> {
           nameController.text = value!;
         },
         validator: (String? value) {
-          if(value?.isEmpty ?? true) {
+          if (value?.isEmpty ?? true) {
             return "Name Cannot Be Empty";
-          }
-          else {
+          } else {
             return null;
           }
         },
@@ -137,10 +140,9 @@ class _StudentFeedbackState extends State<StudentFeedback> {
           queryController.text = value!;
         },
         validator: (String? value) {
-          if(value?.isEmpty ?? true) {
+          if (value?.isEmpty ?? true) {
             return "Name Cannot Be Empty";
-          }
-          else {
+          } else {
             return null;
           }
         },
@@ -175,7 +177,7 @@ class _StudentFeedbackState extends State<StudentFeedback> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () async {
-          if(_formKey.currentState?.validate() ?? false) {
+          if (_formKey.currentState?.validate() ?? false) {
             setState(() {
               isLoading = true;
             });
@@ -186,26 +188,34 @@ class _StudentFeedbackState extends State<StudentFeedback> {
               rating: rating,
             );
 
-            bool isFeedbackSuccessfull = await UserController().createFeedback(feedbackModel);
+            bool isFeedbackSuccessfull =
+                await UserController().createFeedback(feedbackModel);
 
             setState(() {
               isLoading = false;
             });
 
-            if(isFeedbackSuccessfull) {
+            if (isFeedbackSuccessfull) {
               Snakbar().show_success_snakbar(context, "Feedback Successful");
               Navigator.pop(context);
-            }
-            else {
+            } else {
               Snakbar().show_error_snakbar(context, "Feedback Failed");
             }
           }
         },
-        child: isLoading ? SpinKitThreeBounce(color: Colors.white, size: 20,) : Text(
-          "Submit",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),
-        ),
+        child: isLoading
+            ? SpinKitThreeBounce(
+                color: Colors.white,
+                size: 20,
+              )
+            : Text(
+                "Submit",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
       ),
     );
   }

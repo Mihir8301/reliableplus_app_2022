@@ -48,7 +48,8 @@ class _FacultyDashboardState extends State<FacultyDashboard> {
                     text: 'Profile Information',
                     iconPath: 'assets/icons/userprofile.png',
                     ontap: () {
-                      Navigator.pushNamed(context, FacultyProfileInformation.routeName);
+                      Navigator.pushNamed(
+                          context, FacultyProfileInformation.routeName);
                     },
                   ),
                   getButton(
@@ -115,7 +116,8 @@ class _FacultyDashboardState extends State<FacultyDashboard> {
               Icons.more_vert,
               color: Colors.white,
             ),
-            itemBuilder: (BuildContext context) => [
+            itemBuilder: (BuildContext context) =>
+            [
               PopupMenuItem(
                 child: Row(
                   children: [
@@ -171,7 +173,14 @@ class _FacultyDashboardState extends State<FacultyDashboard> {
                   fontWeight: FontWeight.bold,
                   fontSize: 30.0)),
           SizedBox(width: 10.0),
-          Text('${(Provider.of<UserProvider>(context,).adminLoginModel?.name.isNotEmpty ?? false) ? Provider.of<UserProvider>(context,).adminLoginModel!.name : "There!"}',
+          Text('${(Provider
+              .of<UserProvider>(context,)
+              .adminLoginModel
+              ?.name
+              .isNotEmpty ?? false) ? Provider
+              .of<UserProvider>(context,)
+              .adminLoginModel!
+              .name : "There!"}',
               style: TextStyle(
                   fontFamily: 'Montserrat',
                   color: Colors.white,
@@ -183,10 +192,11 @@ class _FacultyDashboardState extends State<FacultyDashboard> {
 
 
   //Supporting Widgets
-  Widget getButton({required String text, required String iconPath, void Function()? ontap}) {
+  Widget getButton(
+      {required String text, required String iconPath, void Function()? ontap}) {
     return InkWell(
       onTap: () {
-        if(ontap != null) {
+        if (ontap != null) {
           ontap();
         }
       },
@@ -216,7 +226,8 @@ class MyClipper extends CustomClipper<Path> {
     path.lineTo(0, size.height - 70);
     var controlpoint = Offset(50, size.height);
     var endpoint = Offset(size.width / 2, size.height);
-    path.quadraticBezierTo(controlpoint.dx, controlpoint.dy, endpoint.dx, endpoint.dy);
+    path.quadraticBezierTo(
+        controlpoint.dx, controlpoint.dy, endpoint.dx, endpoint.dy);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
 

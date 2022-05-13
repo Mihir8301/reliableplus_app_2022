@@ -1,5 +1,7 @@
 class FeedbackModel {
-  String id = "", name = "", feedback = "";
+  String id = "",
+      name = "",
+      feedback = "";
   double rating = 5;
   DateTime createdTime = DateTime.now();
 
@@ -19,11 +21,11 @@ class FeedbackModel {
     createdTime = DateTime.now();
     try {
       String timeString = (map['createdTime']?.toString() ?? "");
-      if(timeString.isNotEmpty) {
+      if (timeString.isNotEmpty) {
         createdTime = DateTime.tryParse(timeString) ?? DateTime.now();
       }
     }
-    catch(e) {}
+    catch (e) {}
   }
 
   void updateFromMap(Map<String, dynamic> map) {
@@ -35,20 +37,20 @@ class FeedbackModel {
     createdTime = DateTime.now();
     try {
       String timeString = (map['createdTime']?.toString() ?? "");
-      if(timeString.isNotEmpty) {
+      if (timeString.isNotEmpty) {
         createdTime = DateTime.tryParse(timeString) ?? DateTime.now();
       }
     }
-    catch(e) {}
+    catch (e) {}
   }
 
   Map<String, dynamic> tomap() {
     return {
-      "id" : id,
-      "name" : name,
-      "feedback" : feedback,
-      "rating" : rating,
-      "createdTime" : createdTime.toString(),
+      "id": id,
+      "name": name,
+      "feedback": feedback,
+      "rating": rating,
+      "createdTime": createdTime.toString(),
     };
   }
 

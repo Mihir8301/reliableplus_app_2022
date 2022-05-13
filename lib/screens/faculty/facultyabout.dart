@@ -35,13 +35,40 @@ class _FacultyAboutState extends State<FacultyAbout> {
                   "Reliable+ is an mobile application that eradicates the usage of registers for attendance purpose.To achieve its purpose face recognition and mask detection based modern technologies are being used.By taking advantage of the latest technologies it is useful in minimising the risks occuring during pandemic situation, as it replaces the biometric system avoiding the touch system.",
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
-                SizedBox(height: 20,),
-                Text("Developed By:-",style: TextStyle(color: Colors.black, fontSize: 20,fontWeight: FontWeight.bold),),
-                SizedBox(height: 10,),
-                Text("Mihir Jadeja",style: TextStyle(color: Colors.black, fontSize: 18,),),
-                Text("Krutik Rathod",style: TextStyle(color: Colors.black, fontSize: 18,),),
-                Text("Vraj Patel",style: TextStyle(color: Colors.black, fontSize: 18,),)
-
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Developed By:-",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Mihir Jadeja",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  "Krutik Rathod",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  "Vraj Patel",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                )
               ],
             )),
       )),

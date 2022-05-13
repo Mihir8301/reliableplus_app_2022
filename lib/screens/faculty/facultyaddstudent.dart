@@ -40,38 +40,50 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
   File? userImageFile;
 
   Future<void> selectImage() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: false,);
-    if((result?.files ?? []).isNotEmpty && (result!.files.first.path?.isNotEmpty ?? false)) {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+    );
+    if ((result?.files ?? []).isNotEmpty &&
+        (result!.files.first.path?.isNotEmpty ?? false)) {
       userImageFile = File(result.files.first.path!);
       setState(() {});
     }
   }
 
-  Future<List<String>> uploadImages({required String studentEnrollmentId, required List<File> images}) async {
+  Future<List<String>> uploadImages(
+      {required String studentEnrollmentId, required List<File> images}) async {
     List<String> downloadUrls = [];
 
-    await Future.wait(images.map((File file) async {
-      Uint8List bytes = file.readAsBytesSync();
+    await Future.wait(
+        images.map((File file) async {
+          Uint8List bytes = file.readAsBytesSync();
 
-      String fileName = file.path.substring(file.path.lastIndexOf("/") + 1);
-      Reference reference = FirebaseStorage.instance.ref().child(STUDENTS_NODE).child(studentEnrollmentId).child(fileName);
-      UploadTask uploadTask = reference.putData(bytes);
-      TaskSnapshot storageTaskSnapshot;
+          String fileName = file.path.substring(file.path.lastIndexOf("/") + 1);
+          Reference reference = FirebaseStorage.instance
+              .ref()
+              .child(STUDENTS_NODE)
+              .child(studentEnrollmentId)
+              .child(fileName);
+          UploadTask uploadTask = reference.putData(bytes);
+          TaskSnapshot storageTaskSnapshot;
 
-      TaskSnapshot snapshot = await uploadTask.then((TaskSnapshot snapshot) => snapshot);
-      if (snapshot.state == TaskState.success) {
-        storageTaskSnapshot = snapshot;
-        final String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
-        downloadUrls.add(downloadUrl);
+          TaskSnapshot snapshot =
+              await uploadTask.then((TaskSnapshot snapshot) => snapshot);
+          if (snapshot.state == TaskState.success) {
+            storageTaskSnapshot = snapshot;
+            final String downloadUrl =
+                await storageTaskSnapshot.ref.getDownloadURL();
+            downloadUrls.add(downloadUrl);
 
-        print('$fileName Upload success, url:${downloadUrl}');
-      }
-      else {
-        print('Error from image repo uploading $fileName: ${snapshot.toString()}');
-        //throw ('This file is not an image');
-      }
-    }),
-        eagerError: true, cleanUp: (_) {
+            print('$fileName Upload success, url:${downloadUrl}');
+          } else {
+            print(
+                'Error from image repo uploading $fileName: ${snapshot.toString()}');
+            //throw ('This file is not an image');
+          }
+        }),
+        eagerError: true,
+        cleanUp: (_) {
           print('eager cleaned up');
         });
 
@@ -83,7 +95,9 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
       isloading = true;
     });
 
-    List<String> uploadUrls = await uploadImages(studentEnrollmentId: enrollmentIdEditingController.text.trim(), images: [userImageFile!]);
+    List<String> uploadUrls = await uploadImages(
+        studentEnrollmentId: enrollmentIdEditingController.text.trim(),
+        images: [userImageFile!]);
 
     StudentModel studentModel = StudentModel(
       name: fullNameEditingController.text.trim(),
@@ -96,13 +110,14 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
       image: uploadUrls.isNotEmpty ? uploadUrls[0] : "",
     );
 
-    bool isCreated = await UserController().createStudentAccount(context, studentModel);
+    bool isCreated =
+        await UserController().createStudentAccount(context, studentModel);
 
     setState(() {
       isloading = false;
     });
 
-    if(isCreated) {
+    if (isCreated) {
       Navigator.pop(context);
     }
   }
@@ -111,7 +126,9 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       inAsyncCall: isloading,
-      progressIndicator: SpinKitFadingCircle(color: Styles.primaryColor,),
+      progressIndicator: SpinKitFadingCircle(
+        color: Styles.primaryColor,
+      ),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -212,15 +229,15 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
         fullNameEditingController.text = value!;
       },
       validator: (String? value) {
-        if(value?.isEmpty ?? true) {
+        if (value?.isEmpty ?? true) {
           return "Name Cannot Be Empty";
-        }
-        else {
+        } else {
           return null;
         }
       },
       textInputAction: TextInputAction.next,
-      decoration: getInputDecoration(iconData: Icons.account_circle, hint: "Enter Full Name"),
+      decoration: getInputDecoration(
+          iconData: Icons.account_circle, hint: "Enter Full Name"),
     );
   }
 
@@ -233,15 +250,15 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
         enrollmentIdEditingController.text = value!;
       },
       validator: (String? value) {
-        if(value?.isEmpty ?? true) {
+        if (value?.isEmpty ?? true) {
           return "Enrollment Number Cannot Be Empty";
-        }
-        else {
+        } else {
           return null;
         }
       },
       textInputAction: TextInputAction.next,
-      decoration: getInputDecoration(iconData: Icons.app_registration, hint: "Enter Enrollment ID"),
+      decoration: getInputDecoration(
+          iconData: Icons.app_registration, hint: "Enter Enrollment ID"),
     );
   }
 
@@ -254,43 +271,42 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
         branchEditingController.text = value!;
       },
       validator: (String? value) {
-        if(value?.isEmpty ?? true) {
+        if (value?.isEmpty ?? true) {
           return "Branch Cannot Be Empty";
-        }
-        else {
+        } else {
           return null;
         }
       },
       textInputAction: TextInputAction.next,
-      decoration: getInputDecoration(iconData: Icons.domain, hint: "Enter Branch"),
+      decoration:
+          getInputDecoration(iconData: Icons.domain, hint: "Enter Branch"),
     );
   }
 
   Widget getEmailTextField() {
     return TextFormField(
-        autofocus: false,
-        controller: emailEditingController,
-        keyboardType: TextInputType.emailAddress,
-        onSaved: (value) {
-          emailEditingController.text = value!;
-        },
+      autofocus: false,
+      controller: emailEditingController,
+      keyboardType: TextInputType.emailAddress,
+      onSaved: (value) {
+        emailEditingController.text = value!;
+      },
       validator: (String? value) {
-        if(value?.isEmpty ?? true) {
+        if (value?.isEmpty ?? true) {
           return "Email Cannot Be Empty";
-        }
-        else {
+        } else {
           return null;
         }
       },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          prefixIcon: Icon(Icons.mail),
-          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "Enter Student Email",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.mail),
+        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: "Enter Student Email",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
+      ),
     );
   }
 
@@ -303,15 +319,15 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
         passwordEditingController.text = value!;
       },
       validator: (String? value) {
-        if(value?.isEmpty ?? true) {
+        if (value?.isEmpty ?? true) {
           return "Password Cannot Be Empty";
-        }
-        else {
+        } else {
           return null;
         }
       },
       textInputAction: TextInputAction.next,
-      decoration: getInputDecoration(iconData: Icons.vpn_key, hint: "Enter Password"),
+      decoration:
+          getInputDecoration(iconData: Icons.vpn_key, hint: "Enter Password"),
     );
   }
 
@@ -323,20 +339,20 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
         phoneNumberEditingController.text = value!;
       },
       validator: (String? value) {
-        if(value?.isEmpty ?? true) {
+        if (value?.isEmpty ?? true) {
           return "Phone Cannot Be Empty";
-        }
-        else {
+        } else {
           return null;
         }
       },
       textInputAction: TextInputAction.done,
-      decoration: getInputDecoration(iconData: Icons.phone, hint: "Enter Phone Number"),
+      decoration:
+          getInputDecoration(iconData: Icons.phone, hint: "Enter Phone Number"),
     );
   }
 
   Widget getImageSelectionWidget() {
-    if(userImageFile != null) {
+    if (userImageFile != null) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -362,7 +378,11 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
                         shape: BoxShape.circle,
                         color: Styles.primaryColor,
                       ),
-                      child: Icon(Icons.close, size: 16, color: Colors.white,),
+                      child: Icon(
+                        Icons.close,
+                        size: 16,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -371,8 +391,7 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
           ),
         ],
       );
-    }
-    else {
+    } else {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black38),
@@ -397,10 +416,13 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
                 ),
               ),
               InkWell(
-                onTap: (){
+                onTap: () {
                   selectImage();
                 },
-                child: Icon(Icons.add,color: Colors.blueAccent,),
+                child: Icon(
+                  Icons.add,
+                  color: Colors.blueAccent,
+                ),
               ),
             ],
           ),
@@ -417,27 +439,29 @@ class _FacultyAddStudentState extends State<FacultyAddStudent> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         onPressed: () {
-          if((_formKey.currentState?.validate() ?? false) && userImageFile != null) {
+          if ((_formKey.currentState?.validate() ?? false) &&
+              userImageFile != null) {
             MyPrint.printOnConsole("Valid");
 
             addStudentToDatabase();
-          }
-          else if(userImageFile == null) {
-            Snakbar().show_error_snakbar(context, "Please Select Profile Image");
+          } else if (userImageFile == null) {
+            Snakbar()
+                .show_error_snakbar(context, "Please Select Profile Image");
           }
         },
         child: Text(
           "Submit",
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
     );
   }
 
-
   //Supporting Widgets
-  InputDecoration getInputDecoration({required IconData iconData, required String hint}) {
+  InputDecoration getInputDecoration(
+      {required IconData iconData, required String hint}) {
     return InputDecoration(
       prefixIcon: Icon(iconData),
       contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),

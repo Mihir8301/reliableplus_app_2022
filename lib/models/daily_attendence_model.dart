@@ -7,32 +7,33 @@ class DailyAttendenceModel {
     this.datetime,
   });
 
+
   DailyAttendenceModel.fromMap(Map<String, dynamic> map) {
     attandance = map['attandance']?.toString() ?? "";
     try {
       String timeString = (map['datetime']?.toString() ?? "");
-      if(timeString.isNotEmpty) {
+      if (timeString.isNotEmpty) {
         datetime = DateTime.tryParse(timeString);
       }
     }
-    catch(e) {}
+    catch (e) {}
   }
 
   void updateFromMap(Map<String, dynamic> map) {
     attandance = map['attandance']?.toString() ?? "";
     try {
       String timeString = (map['datetime']?.toString() ?? "");
-      if(timeString.isNotEmpty) {
+      if (timeString.isNotEmpty) {
         datetime = DateTime.tryParse(timeString);
       }
     }
-    catch(e) {}
+    catch (e) {}
   }
 
   Map<String, dynamic> tomap() {
     return {
-      "attandance" : attandance,
-      "datetime" : datetime?.toString(),
+      "attandance": attandance,
+      "datetime": datetime?.toString(),
     };
   }
 
